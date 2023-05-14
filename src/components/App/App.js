@@ -26,10 +26,10 @@ function App() {
 				</Route>
 
 				{/* Details page */}
-				{movies.map((movie, index) => {
+				{movies.map((movie) => {
 					return (
-						<Route key={index} exact path={`/${movie.title}`}>
-							<MovieDetails />
+						<Route key={movie.id} exact path={`/${movie.title}`}>
+							<MovieDetails id={movie.id} />
 						</Route>
 					);
 				})}
