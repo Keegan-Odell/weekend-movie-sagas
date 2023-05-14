@@ -27,6 +27,7 @@ function MovieDetails(props) {
 	const description = movies[id].description;
 	let genreListNum = [];
 	let genreListDescription = [];
+	console.log(props.id);
 
 	const handleClick = () => {
 		history.push('/');
@@ -54,8 +55,8 @@ function MovieDetails(props) {
 	buildGenreNumArray(genreListNum);
 	buildGenreDescriptionArray(genreListDescription);
 
-	console.log(genreListNum);
-	console.log(genreListDescription);
+	// console.log(genreListNum);
+	// console.log(genreListDescription);
 
 	return (
 		<div>
