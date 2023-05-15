@@ -31,6 +31,7 @@ function* fetchAllMovies() {
 
 function* fetchAllGenres() {
 	try {
+		//get all genred from the DB
 		const genres = yield axios.get('/api/genre');
 		console.log(genres.data);
 		yield put({ type: 'SET_GENRES', payload: genres.data });
@@ -41,6 +42,7 @@ function* fetchAllGenres() {
 
 function* fetchMovieGenres() {
 	try {
+		//get many to many table from DB
 		const movieGenres = yield axios.get('/api/movieGenres');
 		yield put({
 			type: 'SET_MOVIE_GENRES',
