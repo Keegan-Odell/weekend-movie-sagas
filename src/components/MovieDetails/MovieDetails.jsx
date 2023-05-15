@@ -5,7 +5,9 @@ import { useState } from 'react';
 import axios from 'axios';
 
 function MovieDetails(props) {
+	//dispatch is used for redux and sagas
 	const dispatch = useDispatch();
+	//history is used for routing back to our home
 	const history = useHistory();
 	const genres = useSelector((store) => store.genres);
 	const movieGenres = useSelector((store) => store.movieGenres);

@@ -4,14 +4,25 @@ import './MovieList.css';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function MovieList() {
+	//dispatch so we can use it in useEffect
 	const dispatch = useDispatch();
-	const movies = useSelector((store) => store.movies);
+	//this is used for routing
 	const history = useHistory();
+	//grabs our movies from the store
+	const movies = useSelector((store) => store.movies);
 
+
+	//useEffect to populate our movies array using redux and saga
 	useEffect(() => {
 		dispatch({ type: 'FETCH_MOVIES' });
 	}, []);
 
+	//this is what displays on our DOM
+	//we loop over our movies array and for every movie we create a button that
+	//redirects us to our correct movie route
+	//we also create an image and movie title for each movie
+	//by looping through the same array using redux and sagas we can
+	//make sure that we are going to the route created in app.js
 	return (
 		<main>
 			<h1>Movie List</h1>
