@@ -3,6 +3,11 @@ const router = express.Router();
 const pool = require('../modules/pool');
 
 router.get('/:id', (req, res) => {
+	//when we send a get request with a desiered ID
+	//we grab that id and then add it to a sql query
+	//we use database mumbojumbo to make it so 
+	//people cant screw us over and then 
+	//create a get call to the database to get our desiered movie
 	let theIdToGrab = req.params.id;
 	const query = `
 	SELECT * FROM movies 
