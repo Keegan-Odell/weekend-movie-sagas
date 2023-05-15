@@ -2,8 +2,25 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
 
+router.get('/:id', (req, res) => {
+	let theIdToGrab = req.params.id;
+	const query = `
+	SELECT * FROM movies 
+	WHERE id = $1
+	`;
+	let sqlValues = [theIdToGrab];
+	pool
+		.query(query, sqlValues)
+		.then((dbRes) => {
+			res.send(dbRes.rows);
+		})
+		.catch((dbErr) => {
+			res.sendStatus(500);
+		});
+});
+
 router.get('/', (req, res) => {
-	const query = `SELECT * FROM movies ORDER BY "id" ASC`;
+	const query = `SELECT * FROM movies ORDER BY "title" ASC`;
 	pool
 		.query(query)
 		.then((result) => {

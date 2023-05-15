@@ -1,33 +1,39 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useState } from 'react';
+import axios from 'axios';
 
 function MovieDetails(props) {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const movies = useSelector((store) => store.movies);
 	const genres = useSelector((store) => store.genres);
 	const movieGenres = useSelector((store) => store.movieGenres);
+	const [movie, setMovie] = useState([]);
+	const genreListNum = [];
+	const genreListDescription = [];
+	console.log(props.id);
 
 	useEffect(() => {
+		grabMovieFromServer();
 		dispatch({
 			type: 'FETCH_GENRES',
 		});
-	}, []);
-
-	useEffect(() => {
 		dispatch({
 			type: 'FETCH_MOVIE_GENRES',
 		});
 	}, []);
 
-	const id = props.id - 1;
-	const title = movies[id].title;
-	const poster = movies[id].poster;
-	const description = movies[id].description;
-	let genreListNum = [];
-	let genreListDescription = [];
-	console.log(props.id);
+	const grabMovieFromServer = () => {
+		axios
+			.get(`/api/movie/${props.id}`)
+			.then((response) => {
+				setMovie(response.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
 	const handleClick = () => {
 		history.push('/');
@@ -52,25 +58,30 @@ function MovieDetails(props) {
 		}
 	}
 
+	function conditionalRender(array) {
+		if (array.length < 1) {
+			return <div>waiting for movie</div>;
+		} else {
+			return (
+				<div>
+					<button onClick={handleClick}>Home</button>
+					<h1>{movie[0].title}</h1>
+					<img src={movie[0].poster} alt='movie poster' />
+					<h2>Genres</h2>
+					{genreListDescription.map((genre, index) => {
+						return <h4 key={index}>{genre}</h4>;
+					})}
+					<h2>Description</h2>
+					<div>{movie[0].description}</div>
+				</div>
+			);
+		}
+	}
+
 	buildGenreNumArray(genreListNum);
 	buildGenreDescriptionArray(genreListDescription);
 
-	// console.log(genreListNum);
-	// console.log(genreListDescription);
-
-	return (
-		<div>
-			<button onClick={handleClick}>Home</button>
-			<h1>{title}</h1>
-			<img src={poster} alt={movies.title} />
-			<h2>Genres</h2>
-			{genreListDescription.map((genre, index) => {
-				return <h4 key={index}>{genre}</h4>;
-			})}
-			<h2>Description</h2>
-			<div>{description}</div>
-		</div>
-	);
+	return conditionalRender(movie);
 }
 
 export default MovieDetails;
